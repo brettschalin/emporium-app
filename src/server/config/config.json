@@ -1,0 +1,6 @@
+{
+    "user": "emporium",
+    "password": "secretpassword",
+    "host": "localhost",
+    "port": 5432
+}

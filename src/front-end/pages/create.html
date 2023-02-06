@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <script defer src="public/bin/alpine-3.10.5.min.js"></script>
+        <script src="public/bin/htmx-1.8.4-min.js"></script>
+        <script src="public/bin/functions.js"></script>
+    </head>
+
+    <body>
+
+        <div x-data="{name: '', email: '', is_admin: false, id: ''}">
+        <h2>User Creation Form</h2>
+        <!-- For creating new users-->
+        <form 
+            name="createuser"
+            >
+            <label for="name">Name</label>
+            <input type="text" name="Name" placeholder="Full Name" x-model="name" />
+            <br>
+            <label for="email">Email</label>
+            <input type="email" name="Email" placeholder="me@example.com" x-model="email"/>
+            <br>
+            <label for="is_admin">Is Admin</label>
+            <input type="checkbox" name="IsAdmin" x-model="is_admin" />
+
+            <button type="button" x-on:click="id = (await createUser(name, email, is_admin)).id">Submit</button>
+
+        </form>
+
+        <template x-if="!!id">
+            <span x-text="id"></span>
+        </template>
+
+        </div>
+
+        <div x-data="{created_by: '', contents: '', root_parent: null, direct_parent: null, id: ''}">
+        <h2>Post Creation Form</h2>
+        <!-- For creating new posts-->
+        <form 
+            name="createpost"
+            >
+            <label for="CreatedBy">Created By: </label>
+            <input type="text" name="CreatedBy" placeholder="01234567-890a-bcde-f012-34567890abcd" x-model="created_by" />
+            <br>
+            <label for="Contents">Contents: </label>
+            <input type="text" name="Contents" placeholder="Your post here" x-model="contents" />
+            <br>
+            <label for="RootParent">Root Parent: </label>
+            <input type="text" name="RootParent" placeholder="01234567-890a-bcde-f012-34567890abcd" x-model="root_parent" />
+            <br>
+            <label for="DirectParent">Direct Parent: </label>
+            <input type="text" name="DirectParent" placeholder="01234567-890a-bcde-f012-34567890abcd" x-model="direct_parent" />
+            <br>
+            <button type="button" x-on:click="id = (await createPost(created_by, contents, root_parent, direct_parent)).id">Submit</button>
+
+            <template x-if="!!id">
+                <span x-text="id"></span>
+            </template>
+
+        </form>
+        </div>
+
+    </body>
+</html>

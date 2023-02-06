@@ -1,0 +1,41 @@
+<html>
+
+<head>
+    <script defer src="public/bin/alpine-3.10.5.min.js"></script>
+    <script src="public/bin/htmx-1.8.4-min.js"></script>
+    <script src="public/bin/functions.js"></script>
+
+    <link rel="stylesheet" href="public/styles/styles.css">
+    </link>
+
+</head>
+
+<body x-data="{ posts: [], selectedPosts: [], submit: async function(approved) {await approvePosts(approved, this.selectedPosts); this.posts = await getPosts(true); this.selectedPosts = []} }"
+    x-init="posts = await getPosts(true) || []">
+
+    <template x-if="posts.length > 0">
+        <form name="modqueue">
+            <ul>
+                <template x-for="post in posts">
+                    <li class="post-main" id="$id('post')">
+                        <p>By: <span style="font-style: italic" x-text=" post.created_by"></span></p>
+                        <p>Posted on: <span x-text="post.created"></span></p>
+                        <p x-text="post.contents"></p>
+                        <input type="checkbox" x-model="selectedPosts" x-bind:value="post.id">
+                    </li>
+                </template>
+            </ul>
+
+            <button type="button" x-on:click="submit(true)">Approve</button>
+            <button type="button" x-on:click="submit(false)">Reject</button>
+        </form>
+
+    </template>
+    <template x-if="!posts.length">
+        <h2>No posts yet</h2>
+    </template>
+
+
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <script defer src="public/bin/alpine-3.10.5.min.js"></script>
+        <script src="public/bin/htmx-1.8.4-min.js"></script>
+        <script src="public/bin/functions.js"></script>
+    
+        <link rel="stylesheet" href="public/styles/styles.css">
+    </head>
+
+    <body x-data="{ posts: [] }"
+          x-init="posts = await getPosts(false) || []">
+        
+          <template x-if="posts.length > 0">
+            <ul>
+                <template x-for="post in posts">
+                    <li class="post-main" id="$id('post')">
+                        <p>By: <span style="font-style: italic" x-text=" post.created_by"></span></p>
+                        <p>Posted on: <span x-text="new Date(post.created).toLocaleString()"></span></p>
+                        <p x-text="post.contents"></p>
+                    </li>
+                </template>
+            </ul>
+        </template>
+        <template x-if="!posts.length">
+            <h2>No posts yet. Would you like to <a href="create.html">create some?</h2>
+        </template>
+
+
+    </body>
+
+</html>
