@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"marketplace-server/entity"
+	"github.com/brettschalin/emporium-app/entity"
 
 	"github.com/google/uuid"
 )

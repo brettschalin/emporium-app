@@ -1,4 +1,4 @@
-module marketplace-server
+module github.com/brettschalin/emporium-app
 
 go 1.18
 

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"marketplace-server/config"
-	"marketplace-server/db"
+	"github.com/brettschalin/emporium-app/config"
+	"github.com/brettschalin/emporium-app/db"
 
 	"github.com/gin-gonic/gin"
 )

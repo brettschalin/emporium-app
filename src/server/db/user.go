@@ -3,7 +3,7 @@ package db
 import (
 	"context"
 
-	"marketplace-server/entity"
+	"github.com/brettschalin/emporium-app/entity"
 
 	"github.com/google/uuid"
 )

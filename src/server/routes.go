@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"marketplace-server/db"
-	"marketplace-server/entity"
+	"github.com/brettschalin/emporium-app/db"
+	"github.com/brettschalin/emporium-app/entity"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
