@@ -1,0 +1,22 @@
+<div>
+    <template x-if="posts.length > 0">
+        <ul>
+            <template x-for="post in posts">
+                <li class="post-main" id="$id('post')">
+                    <p>By: <span style="font-style: italic" x-text=" post.created_by"></span></p>
+                    <p>Posted on: <span x-text="new Date(post.created).toLocaleString()"></span></p>
+                    <p x-text="post.contents"></p>
+                    {% if showModButtons %}<input type="checkbox" x-model="selectedPosts" x-bind:value="post.id" />{% endif %}
+                </li>
+            </template>
+        </ul>
+        {% if showModButtons %}
+        <button type="button" x-on:click="submit(true)">Approve</button>
+        <button type="button" x-on:click="submit(false)">Reject</button>
+        {% endif %}
+
+    </template>
+    <template x-if="!posts.length">
+        <h2>No posts yet. Would you like to <a href="create.html">create some?</h2>
+    </template>
+</div>

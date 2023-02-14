@@ -7,8 +7,10 @@ import (
 
 	"github.com/brettschalin/emporium-app/config"
 	"github.com/brettschalin/emporium-app/db"
+	"github.com/brettschalin/emporium-app/routes"
 
 	"github.com/gin-gonic/gin"
+	p2g "gitlab.com/go-box/pongo2gin/v4"
 )
 
 func main() {
@@ -31,7 +33,9 @@ func main() {
 	r := gin.Default()
 	r.SetTrustedProxies(nil)
 
-	SetupRoutes(r)
+	r.HTMLRender = p2g.Default()
+
+	routes.Setup(r)
 
 	r.Run()
 }

@@ -1,4 +1,4 @@
-package main
+package routes
 
 import (
 	"context"
@@ -13,23 +13,20 @@ import (
 	"github.com/google/uuid"
 )
 
-func SetupRoutes(r *gin.Engine) {
-	p := r.Group("/api/posts")
-	u := r.Group("/api/users")
 
-	p.GET("/", GetPosts)
-	p.GET("/:id", GetPostByID)
-	p.POST("/", CreatePost)
-	p.PUT("/:id", UpdatePostByID)
-	p.POST("/approve", ApprovePosts)
-	p.DELETE("/:id", DeletePostByID)
-
-	u.GET("/:id", GetUserByID)
-	u.POST("/", CreateUser)
-	u.DELETE("/:id", DeleteUserByID)
+func setupPostRoutes(group string, r *gin.Engine) {
+	p := r.Group(group)
+	p.GET("/", getPosts)
+	p.GET("/:id", getPostByID)
+	p.POST("/", createPost)
+	p.PUT("/:id", updatePostByID)
+	p.POST("/approve", approvePosts)
+	p.DELETE("/:id", deletePostByID)
 }
 
-func GetPosts(c *gin.Context) {
+
+
+func getPosts(c *gin.Context) {
 	ctx := context.Background()
 
 	var (
@@ -55,7 +52,7 @@ func GetPosts(c *gin.Context) {
 	}
 }
 
-func GetPostByID(c *gin.Context) {
+func getPostByID(c *gin.Context) {
 	id, err := uuid.Parse(c.Param("id"))
 
 	if err != nil {
@@ -70,7 +67,7 @@ func GetPostByID(c *gin.Context) {
 	c.JSON(http.StatusOK, post)
 }
 
-func CreatePost(c *gin.Context) {
+func createPost(c *gin.Context) {
 
 	var (
 		p  entity.Post
@@ -106,7 +103,7 @@ func CreatePost(c *gin.Context) {
 	})
 }
 
-func UpdatePostByID(c *gin.Context) {
+func updatePostByID(c *gin.Context) {
 	id, err := uuid.Parse(c.Param("id"))
 
 	if err != nil {
@@ -134,7 +131,7 @@ func UpdatePostByID(c *gin.Context) {
 	c.JSON(http.StatusNoContent, gin.H{})
 }
 
-func ApprovePosts(c *gin.Context) {
+func approvePosts(c *gin.Context) {
 	var (
 		err error
 		ar  entity.ApprovePostsRequest
@@ -155,7 +152,7 @@ func ApprovePosts(c *gin.Context) {
 	c.JSON(http.StatusNoContent, gin.H{})
 }
 
-func DeletePostByID(c *gin.Context) {
+func deletePostByID(c *gin.Context) {
 	id, err := uuid.Parse(c.Param("id"))
 
 	if err != nil {
@@ -166,72 +163,6 @@ func DeletePostByID(c *gin.Context) {
 	ctx := context.Background()
 
 	err = db.DeletePost(ctx, id)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, "Unexpected error: "+err.Error())
-		return
-	}
-
-	c.JSON(http.StatusNoContent, gin.H{})
-}
-
-func CreateUser(c *gin.Context) {
-	var (
-		cu entity.CreateUserRequest
-	)
-	if err := c.Bind(&cu); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "could not bind request body",
-			"error":   err,
-		})
-		return
-	}
-	ctx := context.Background()
-
-	id, err := db.CreateUser(ctx, &entity.User{
-		Name:    cu.Name,
-		Email:   cu.Email,
-		IsAdmin: cu.IsAdmin,
-	})
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, "Unexpected error: "+err.Error())
-		return
-	}
-	c.JSON(http.StatusCreated, gin.H{
-		"id": id,
-	})
-}
-
-func GetUserByID(c *gin.Context) {
-	id, err := uuid.Parse(c.Param("id"))
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, "ID must be a valid UUID")
-		return
-	}
-
-	ctx := context.Background()
-
-	post, err := db.GetUser(ctx, id)
-
-	if err != nil {
-		c.JSON(http.StatusNotFound, "could not find user: "+err.Error())
-	}
-
-	c.JSON(http.StatusOK, post)
-}
-
-func DeleteUserByID(c *gin.Context) {
-	id, err := uuid.Parse(c.Param("id"))
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, "ID must be a valid UUID")
-		return
-	}
-
-	ctx := context.Background()
-
-	err = db.DeleteUser(ctx, id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "Unexpected error: "+err.Error())
 		return
