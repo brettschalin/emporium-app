@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -13,7 +14,8 @@
 <body
     x-data="{ posts: [], selectedPosts: [], submit: async function(approved) {await approvePosts(approved, this.selectedPosts); this.posts = await getPosts(true); this.selectedPosts = []} }"
     x-init="posts = await getPosts(true) || []">
-    <div hx-get="/templates/postlist?showModButtons=true" hx-swap="outerHTML">Loading...</div>
+    <div hx-ext="alpine-morph" hx-trigger="load" hx-get="/templates/postlist?showModButtons=true" hx-swap="outerHTML">Loading...</div>
+    
 </body>
 
 </html>

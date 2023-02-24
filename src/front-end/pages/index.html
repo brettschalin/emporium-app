@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -9,9 +10,7 @@
 </head>
 
 <body x-data="{ posts: [] }" x-init="posts = await getPosts(false) || []">
-
-    <div hx-get="/templates/postlist?showModButtons=false" hx-swap="outerHTML">Loading...</div>
-
+    <div hx-ext="alpine-morph" hx-trigger="load" hx-get="/templates/postlist?showModButtons=false">Loading...</div>
 </body>
 
 </html>

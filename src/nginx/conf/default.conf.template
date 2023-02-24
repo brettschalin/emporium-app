@@ -16,7 +16,7 @@ server {
     server_name ${NGINX_HOST};
     
     # API requests
-    location ~ ^/api {
+    location ~ ^/(api|templates) {
         proxy_pass http://localhost:8080;
     }
 
